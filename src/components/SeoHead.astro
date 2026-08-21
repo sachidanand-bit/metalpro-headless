@@ -1,0 +1,25 @@
+---
+import type { RankMathSeo } from '../types/wp';
+
+export interface Props {
+  seo: RankMathSeo | null;
+  fallbackTitle?: string;
+}
+
+const { seo, fallbackTitle } = Astro.props;
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'http://localhost:4321';
+const wpDomain = 'cxm.ihg.mybluehost.me/website_e18f7bf7';
+
+// Function to clean WP domains from Rank Math output
+function sanitizeSeoHead(headString: string) {
+  if (!headString) return '';
+  return headString.replace(new RegExp(`https?://${wpDomain}`, 'g'), siteUrl);
+}
+---
+
+{ seo?.fullHead ? (
+  <Fragment set:html={sanitizeSeoHead(seo.fullHead)} />
+) : (
+  <title>{fallbackTitle || 'Metal Pro Buildings'}</title>
+  <meta name="robots" content="noindex, nofollow" />
+)}

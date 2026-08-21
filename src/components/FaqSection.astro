@@ -1,0 +1,75 @@
+---
+import type { FaqNode } from '../types/wp';
+
+export interface Props {
+  faqs: FaqNode[];
+}
+
+const { faqs } = Astro.props;
+
+// Generate Schema using legacy plugin logic
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((faq) => ({
+    "@type": "Question",
+    "name": faq.title,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.content.replace(/<[^>]*>?/gm, '') // Strip HTML tags for valid JSON-LD
+    }
+  }))
+};
+---
+
+<style>
+  .metalpro-faqs {
+    max-width: 800px;
+    margin: 2rem auto;
+    font-family: system-ui, sans-serif;
+  }
+  .faq-item {
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 1rem;
+  }
+  .faq-question {
+    padding: 1rem 0;
+    font-weight: 600;
+    font-size: 1.125rem;
+    cursor: pointer;
+    list-style: none; /* Hide default arrow */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+  .faq-question::after {
+    content: '+';
+    font-size: 1.5rem;
+    transition: transform 0.2s;
+  }
+  details[open] .faq-question::after {
+    content: '-';
+    transform: rotate(180deg);
+  }
+  .faq-answer {
+    padding-bottom: 1.5rem;
+    color: #4a5568;
+    line-height: 1.6;
+  }
+</style>
+
+<!-- Inject FAQ Schema into the Head -->
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+<!-- Render Accordion HTML -->
+<div class="metalpro-faqs">
+  {faqs.map((faq) => (
+    <details class="faq-item">
+      <summary class="faq-question">{faq.title}</summary>
+      <div class="faq-answer" set:html={faq.content} />
+    </details>
+  ))}
+</div>
