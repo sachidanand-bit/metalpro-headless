@@ -1,0 +1,31 @@
+---
+import { getAllPostSlugs, getPostBySlug } from '../lib/wp';
+import SeoHead from '../components/SeoHead.astro';
+
+export async function getStaticPaths() {
+  const slugs = await getAllPostSlugs();
+  return slugs.map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug!);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <SeoHead seo={post.seo} fallbackTitle={post.title} />
+  </head>
+  <body style="max-width: 800px; margin: 0 auto; padding: 2rem; font-family: system-ui, sans-serif; line-height: 1.6;">
+    <a href="/" style="color: #2563eb; text-decoration: none;">&larr; Back to Home</a>
+    <h1 style="margin-top: 1.5rem; font-size: 2.25rem;">{post.title}</h1>
+    <div class="post-content" set:html={post.content} />
+  </body>
+</html>
