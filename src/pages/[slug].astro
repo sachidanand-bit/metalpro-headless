@@ -1,6 +1,7 @@
 ---
-import { getAllPostSlugs, getPostBySlug } from '../lib/wp';
+import { getAllPostSlugs, getPostBySlug, getFAQs } from '../lib/wp';
 import SeoHead from '../components/SeoHead.astro';
+import FaqSection from '../components/FaqSection.astro';
 
 export async function getStaticPaths() {
   const slugs = await getAllPostSlugs();
@@ -15,6 +16,34 @@ const post = await getPostBySlug(slug!);
 if (!post) {
   return Astro.redirect('/404');
 }
+
+const allFaqs = await getFAQs();
+
+// Regex to capture [faqs] or [faqs category="xxx"]
+const shortcodeRegex = /\[faqs(?:\s+category=["']([^"']+)["'])?\s*\]/i;
+const match = post.content ? post.content.match(shortcodeRegex) : null;
+
+let contentBefore = post.content || '';
+let contentAfter = '';
+let categoryFaqs = [];
+let hasShortcode = false;
+
+if (match) {
+  hasShortcode = true;
+  const categorySlug = match[1]; // e.g. "farm" or "rv-building"
+  
+  const parts = post.content.split(match[0]);
+  contentBefore = parts[0];
+  contentAfter = parts[1] || '';
+
+  if (categorySlug) {
+    categoryFaqs = allFaqs.filter((faq) =>
+      faq.faqCategories?.nodes.some((cat) => cat.slug.toLowerCase() === categorySlug.toLowerCase())
+    );
+  } else {
+    categoryFaqs = allFaqs;
+  }
+}
 ---
 
 <html lang="en">
@@ -26,6 +55,15 @@ if (!post) {
   <body style="max-width: 800px; margin: 0 auto; padding: 2rem; font-family: system-ui, sans-serif; line-height: 1.6;">
     <a href="/" style="color: #2563eb; text-decoration: none;">&larr; Back to Home</a>
     <h1 style="margin-top: 1.5rem; font-size: 2.25rem;">{post.title}</h1>
-    <div class="post-content" set:html={post.content} />
+    
+    {hasShortcode ? (
+      <>
+        <div class="post-content" set:html={contentBefore} />
+        <FaqSection faqs={categoryFaqs} />
+        <div class="post-content" set:html={contentAfter} />
+      </>
+    ) : (
+      <div class="post-content" set:html={post.content} />
+    )}
   </body>
 </html>
