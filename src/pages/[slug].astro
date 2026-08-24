@@ -19,26 +19,30 @@ if (!post) {
 
 const allFaqs = await getFAQs();
 
-// Regex to capture [faqs] or [faqs category="xxx"]
-const shortcodeRegex = /\[faqs(?:\s+category=["']([^"']+)["'])?\s*\]/i;
-const match = post.content ? post.content.match(shortcodeRegex) : null;
+// Matches [faqs], curly quotes (”/“), straight quotes, HTML entities, and optional wrapping <p> tags
+const shortcodeRegex = /(?:<p[^>]*>)?\s*\[faqs(?:\s+category=(?:&quot;|&#8221;|&#8220;|["'”`‘])?([a-zA-Z0-9_-]+)(?:&quot;|&#8221;|&#8220;|["'”`‘])?)?\s*\]\s*(?:<\/p>)?/i;
 
-let contentBefore = post.content || '';
+const rawContent = post.content || '';
+const match = rawContent.match(shortcodeRegex);
+
+let contentBefore = rawContent;
 let contentAfter = '';
 let categoryFaqs = [];
 let hasShortcode = false;
 
 if (match) {
   hasShortcode = true;
-  const categorySlug = match[1]; // e.g. "farm" or "rv-building"
-  
-  const parts = post.content.split(match[0]);
+  const categorySlug = match[1]; // Extracts category e.g. "farm"
+
+  const parts = rawContent.split(match[0]);
   contentBefore = parts[0];
-  contentAfter = parts[1] || '';
+  contentAfter = parts.slice(1).join(match[0]);
 
   if (categorySlug) {
     categoryFaqs = allFaqs.filter((faq) =>
-      faq.faqCategories?.nodes.some((cat) => cat.slug.toLowerCase() === categorySlug.toLowerCase())
+      faq.faqCategories?.nodes.some(
+        (cat) => cat.slug.toLowerCase() === categorySlug.toLowerCase()
+      )
     );
   } else {
     categoryFaqs = allFaqs;
