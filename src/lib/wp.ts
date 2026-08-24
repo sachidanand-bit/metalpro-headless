@@ -1,6 +1,5 @@
 import type { FaqNode, PostNode } from '../types/wp';
 
-// const GRAPHQL_URL = import.meta.env.WPGRAPHQL_URL;
 const GRAPHQL_URL = (import.meta as any).env.WPGRAPHQL_URL || 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/graphql';
 
 async function fetchAPI<T>(query: string, variables?: Record<string, any>): Promise<T> {
@@ -42,7 +41,7 @@ export async function getFAQs(): Promise<FaqNode[]> {
 export async function getPosts(): Promise<PostNode[]> {
   const data = await fetchAPI<{ posts: { nodes: PostNode[] } }>(`
     query GetPosts {
-      posts(first: 10) {
+      posts(first: 100) {
         nodes {
           title
           slug
@@ -57,4 +56,36 @@ export async function getPosts(): Promise<PostNode[]> {
     }
   `);
   return data.posts.nodes;
+}
+
+export async function getAllPostSlugs(): Promise<string[]> {
+  const data = await fetchAPI<{ posts: { nodes: { slug: string }[] } }>(`
+    query GetAllSlugs {
+      posts(first: 1000) {
+        nodes {
+          slug
+        }
+      }
+    }
+  `);
+  return data.posts.nodes.map((post) => post.slug);
+}
+
+export async function getPostBySlug(slug: string): Promise<PostNode | null> {
+  const data = await fetchAPI<{ post: PostNode }>(`
+    query GetPostBySlug($id: ID!) {
+      post(id: $id, idType: SLUG) {
+        title
+        slug
+        content
+        seo {
+          title
+          description
+          canonicalUrl
+          fullHead
+        }
+      }
+    }
+  `, { id: slug });
+  return data.post;
 }
