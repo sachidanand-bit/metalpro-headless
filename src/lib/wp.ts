@@ -1,6 +1,7 @@
 import type { FaqNode, PostNode } from '../types/wp';
 
-const GRAPHQL_URL = import.meta.env.WPGRAPHQL_URL;
+// const GRAPHQL_URL = import.meta.env.WPGRAPHQL_URL;
+const GRAPHQL_URL = (import.meta as any).env.WPGRAPHQL_URL || 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/graphql';
 
 async function fetchAPI<T>(query: string, variables?: Record<string, any>): Promise<T> {
   const res = await fetch(GRAPHQL_URL, {
