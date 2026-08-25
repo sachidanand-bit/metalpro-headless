@@ -1,6 +1,6 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { getFAQs, getPosts } from '../lib/wp';
-import SeoHead from '../components/SeoHead.astro';
 import FaqSection from '../components/FaqSection.astro';
 
 const faqs = await getFAQs();
@@ -8,13 +8,8 @@ const posts = await getPosts();
 const sampleSeo = posts[0]?.seo || null;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <SeoHead seo={sampleSeo} fallbackTitle="Metal Pro Buildings | Steel Buildings Canada" />
-  </head>
-  <body style="max-width: 900px; margin: 0 auto; padding: 2rem; font-family: system-ui, sans-serif;">
+<BaseLayout seo={sampleSeo} title="Metal Pro Buildings | Steel Buildings Canada">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem;">
     <h1>Metal Pro Buildings</h1>
 
     <h2>Recent Articles</h2>
@@ -30,5 +25,5 @@ const sampleSeo = posts[0]?.seo || null;
 
     <h2>Frequently Asked Questions</h2>
     <FaqSection faqs={faqs} />
-  </body>
-</html>
+  </div>
+</BaseLayout>

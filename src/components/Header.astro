@@ -1,0 +1,396 @@
+---
+import { headerNav } from '../config/navigation';
+---
+
+<header class="site-header">
+  <div class="header-container">
+    <!-- Logo with Fallback -->
+    <a href="/" class="logo-link">
+      <img 
+        src="https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2025/08/mpb-wp-login-logo-600x325-1.webp" 
+        alt="Metal Pro Buildings" 
+        class="logo-img"
+      />
+    </a>
+
+    <!-- Mobile Hamburger Button -->
+    <button class="mobile-toggle" id="menuToggle" aria-label="Toggle Navigation">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <!-- Navigation Bar & Mobile Drawer -->
+    <nav class="main-nav" id="mainNav">
+      <ul class="nav-list">
+        {headerNav.map((item) => (
+          <li class={item.isMegaMenu ? 'has-megamenu' : item.children ? 'has-dropdown' : ''}>
+            <a href={item.url} class="nav-link">
+              {item.label} {(item.isMegaMenu || item.children) && <span class="arrow">▾</span>}
+            </a>
+
+            {/* Mega Menu */}
+            {item.isMegaMenu && item.megaColumns && (
+              <div class="megamenu-dropdown">
+                <div class="megamenu-grid">
+                  {item.megaColumns.map((col) => (
+                    <div class="megamenu-col">
+                      <h4>{col.title}</h4>
+                      <ul>
+                        {col.items.map((subItem) => (
+                          <li><a href={subItem.url}>{subItem.label}</a></li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Standard Dropdown */}
+            {!item.isMegaMenu && item.children && (
+              <ul class="standard-dropdown">
+                {item.children.map((child) => (
+                  <li><a href={child.url}>{child.label}</a></li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <!-- Drawer CTA Button (Mobile Only) -->
+      <div class="mobile-cta-container">
+        <a href="/quote" class="cta-button mobile-cta-btn">START MY PROJECT</a>
+      </div>
+    </nav>
+
+    <!-- Header CTA Button (Desktop Only) -->
+    <div class="desktop-cta-container">
+      <a href="/quote" class="cta-button">START MY PROJECT</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggleBtn = document.getElementById('menuToggle');
+  const navMenu = document.getElementById('mainNav');
+
+  toggleBtn?.addEventListener('click', () => {
+    toggleBtn.classList.toggle('active');
+    navMenu?.classList.toggle('active');
+  });
+</script>
+
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  .site-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+  }
+
+  .header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  
+  .logo-img {
+    height: 42px;
+    width: auto;
+    max-width: 180px;
+    object-fit: contain;
+  }
+
+  /* Desktop Navigation */
+  .main-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .nav-list li {
+    position: relative;
+  }
+
+  .nav-link {
+    text-decoration: none;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+  }
+  
+  .nav-link:hover {
+    color: #e65100;
+  }
+
+  .arrow {
+    font-size: 1.05rem;
+  }
+
+  /* Mega Menu (Desktop) */
+  .megamenu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 800px;
+    border: 1px solid #f1f5f9;
+  }
+
+  .has-megamenu:hover .megamenu-dropdown {
+    display: block;
+  }
+
+  .megamenu-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  .megamenu-col h4 {
+    font-size: 0.95rem;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .megamenu-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .megamenu-col li {
+    text-align: center;
+  }
+
+  .megamenu-col a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #475569;
+    padding: 0.4rem 0;
+    display: block;
+    text-decoration: none;
+  }
+
+  .megamenu-col a:hover {
+    color: #e65100;
+  }
+
+  /* Standard Dropdown (Desktop) */
+  .standard-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 0.5rem 0;
+    min-width: 200px;
+    list-style: none;
+    border: 1px solid #f1f5f9;
+  }
+
+  .has-dropdown:hover .standard-dropdown {
+    display: block;
+  }
+
+  .standard-dropdown li a {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #334155;
+    display: block;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .standard-dropdown li a:hover {
+    background: #f8fafc;
+    color: #e65100;
+  }
+
+  /* CTA Button Styles */
+  .desktop-cta-container {
+    flex-shrink: 0;
+  }
+
+  .cta-button {
+    background-color: #ff5722;
+    color: #ffffff !important;
+    padding: 0.65rem 1.25rem;
+    border-radius: 4px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    display: inline-block;
+    transition: background-color 0.2s ease;
+  }
+
+  .cta-button:hover {
+    background-color: #e65100;
+  }
+
+  .mobile-toggle,
+  .mobile-cta-container {
+    display: none;
+  }
+
+  /* RESPONSIVE BREAKPOINT (<= 1024px Tablet & Mobile) */
+  @media (max-width: 1024px) {
+    .desktop-cta-container {
+      display: none;
+    }
+
+    .mobile-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 32px;
+      height: 26px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .mobile-toggle .bar {
+      height: 3px;
+      width: 100%;
+      background-color: #1e293b;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-toggle.active .bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .mobile-toggle.active .bar:nth-child(2) {
+      opacity: 0;
+    }
+    .mobile-toggle.active .bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .main-nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      width: 100%;
+      background: #ffffff;
+      box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+      border-top: 1px solid #e2e8f0;
+      padding: 1rem 1.5rem 1.5rem 1.5rem;
+      flex-direction: column;
+      align-items: stretch;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .main-nav.active {
+      display: flex;
+    }
+
+    .nav-list {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      width: 100%;
+    }
+
+    .nav-list li {
+      width: 100%;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .nav-link {
+      width: 100%;
+      justify-content: space-between;
+      padding: 0.85rem 0;
+    }
+
+    /* Mobile Accordion Dropdowns */
+    .megamenu-dropdown,
+    .standard-dropdown {
+      position: static;
+      transform: none;
+      width: 100%;
+      box-shadow: none;
+      border: none;
+      padding: 0 0 0.75rem 1rem;
+      background: #f8fafc;
+      border-radius: 4px;
+    }
+
+    .megamenu-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .megamenu-col h4 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0.5rem;
+    }
+
+    .megamenu-col li {
+      text-align: left;
+    }
+
+    .mobile-cta-container {
+      display: block;
+      margin-top: 1.25rem;
+      width: 100%;
+    }
+
+    .mobile-cta-btn {
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+  }
+</style>

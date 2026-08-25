@@ -1,0 +1,29 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SeoHead from '../components/SeoHead.astro';
+import type { RankMathSeo } from '../types/wp';
+
+export interface Props {
+  seo?: RankMathSeo | null;
+  title?: string;
+}
+
+const { seo = null, title = 'Metal Pro Buildings' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <SeoHead seo={seo} fallbackTitle={title} />
+  </head>
+  <body style="margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; color: #1e293b; background-color: #ffffff;">
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
