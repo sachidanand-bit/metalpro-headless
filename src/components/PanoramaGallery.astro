@@ -1,0 +1,374 @@
+---
+const scenes = [
+  {
+    id: 'farm-interior',
+    title: 'Model Q Agricultural Arch Interior',
+    category: 'Agricultural Storage',
+    description: 'Explore the 100% column-free clear span volume inside a 50ft x 100ft steel farm equipment barn.',
+    thumbnail: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-Farm.webp',
+    panoUrl: 'https://pannellum.org/images/cerro-toco-0.jpg', // Replace with your actual 360° equirectangular image URL
+  },
+  {
+    id: 'workshop-interior',
+    title: 'Model S Steel Workshop & Garage',
+    category: 'Residential & Workshop',
+    description: 'Inspect vertical sidewall clearance, custom overhead door framing, and interior spray-foam insulation.',
+    thumbnail: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-RV-Storage.webp',
+    panoUrl: 'https://pannellum.org/images/alma.jpg', // Replace with your actual 360° equirectangular image URL
+  },
+];
+---
+
+<section class="gallery-section">
+  <div class="gallery-container">
+    
+    <div class="section-header">
+      <span class="gallery-kicker">INTERACTIVE VIRTUAL TOURS</span>
+      <h2>Step Inside Metal Pro Buildings in 360°</h2>
+      <p>
+        Experience true interior clear-span dimensions and head clearance before breaking ground on your job site.
+      </p>
+    </div>
+
+    <!-- Tour Preview Cards -->
+    <div class="tour-grid">
+      {scenes.map((scene) => (
+        <div class="tour-card">
+          <div class="card-thumb">
+            <img src={scene.thumbnail} alt={scene.title} />
+            <div class="thumb-overlay">
+              <button 
+                class="pano-launch-btn" 
+                data-pano={scene.panoUrl} 
+                data-title={scene.title}
+              >
+                <span class="play-icon">360°</span>
+                <span>Launch Virtual Tour</span>
+              </button>
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="scene-cat">{scene.category}</span>
+            <h3>{scene.title}</h3>
+            <p>{scene.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+
+  <!-- 360° Panorama Modal Overlay -->
+  <div class="pano-modal" id="panoModal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">360° Virtual Tour</h3>
+        <button class="modal-close" id="modalClose" aria-label="Close Tour">&times;</button>
+      </div>
+      <div class="viewer-container">
+        <div id="panoViewer"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  let pannellumLoaded = false;
+  let viewerInstance: any = null;
+
+  // On-demand asset loader (Only fires on user interaction)
+  function loadPannellum(callback: () => void) {
+    if (pannellumLoaded) return callback();
+
+    // Dynamically inject CSS
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css';
+    document.head.appendChild(link);
+
+    // Dynamically inject JS Script
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js';
+    script.onload = () => {
+      pannellumLoaded = true;
+      callback();
+    };
+    document.head.appendChild(script);
+  }
+
+  const modal = document.getElementById('panoModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const closeBtn = document.getElementById('modalClose');
+  const backdrop = document.getElementById('modalBackdrop');
+  const launchBtns = document.querySelectorAll<HTMLButtonElement>('.pano-launch-btn');
+
+  function openTour(panoUrl: string, title: string) {
+    if (!modal || !modalTitle) return;
+    
+    modalTitle.textContent = title;
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    loadPannellum(() => {
+      if (viewerInstance) {
+        viewerInstance.destroy();
+      }
+      
+      // Initialize Pannellum viewer instance
+      viewerInstance = (window as any).pannellum.viewer('panoViewer', {
+        type: 'equirectangular',
+        panorama: panoUrl,
+        autoLoad: true,
+        autoRotate: -2,
+        compass: false,
+        showZoomCtrl: true,
+      });
+    });
+  }
+
+  function closeTour() {
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    
+    if (viewerInstance) {
+      viewerInstance.destroy();
+      viewerInstance = null;
+    }
+  }
+
+  launchBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const panoUrl = btn.getAttribute('data-pano') || '';
+      const title = btn.getAttribute('data-title') || '';
+      openTour(panoUrl, title);
+    });
+  });
+
+  closeBtn?.addEventListener('click', closeTour);
+  backdrop?.addEventListener('click', closeTour);
+</script>
+
+<style>
+  .gallery-section {
+    background: #0f172a;
+    color: #ffffff;
+    padding: 4.5rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .gallery-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .gallery-kicker {
+    color: #ff5722;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.8rem, 4vw, 2.75rem);
+    font-weight: 800;
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  .section-header p {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Tour Grid */
+  .tour-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .tour-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .card-thumb {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+  }
+
+  .card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .tour-card:hover .card-thumb img {
+    transform: scale(1.05);
+  }
+
+  .thumb-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+  }
+
+  .pano-launch-btn {
+    background: #ff5722;
+    color: #ffffff;
+    border: none;
+    padding: 0.85rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    box-shadow: 0 10px 25px rgba(255, 87, 34, 0.4);
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+
+  .pano-launch-btn:hover {
+    background: #e64a19;
+    transform: scale(1.05);
+  }
+
+  .play-icon {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+  }
+
+  .card-info {
+    padding: 1.5rem;
+  }
+
+  .scene-cat {
+    color: #38bdf8;
+    font-size: 0.775rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .card-info h3 {
+    font-size: 1.25rem;
+    margin: 0.3rem 0 0.5rem;
+  }
+
+  .card-info p {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Modal Styling */
+  .pano-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .pano-modal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+  }
+
+  .modal-content {
+    position: relative;
+    z-index: 2001;
+    width: min(1100px, 92vw);
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #ffffff;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .modal-close:hover {
+    color: #ffffff;
+  }
+
+  .viewer-container {
+    height: 550px;
+    width: 100%;
+    position: relative;
+  }
+
+  #panoViewer {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .tour-grid {
+      grid-template-columns: 1fr;
+    }
+    .viewer-container {
+      height: 400px;
+    }
+  }
+</style>

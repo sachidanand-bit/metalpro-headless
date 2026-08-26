@@ -1,0 +1,563 @@
+---
+const projects = [
+  {
+    id: 'proj-1',
+    category: 'agricultural',
+    categoryLabel: 'Agricultural',
+    title: '50’ x 100’ Equipment & Grain Barn',
+    location: 'Lethbridge, Alberta',
+    model: 'Model Q Arch',
+    snowLoad: '4.2 kPa (87 PSF)',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-Farm.webp',
+    details: 'Clear-span agricultural arch designed to store combine harvesters and high-capacity grain yield with zero internal support posts.',
+  },
+  {
+    id: 'proj-2',
+    category: 'residential',
+    categoryLabel: 'Residential',
+    title: '30’ x 40’ Deluxe RV Garage & Workshop',
+    location: 'Muskoka, Ontario',
+    model: 'Model S Straight Wall',
+    snowLoad: '3.8 kPa (79 PSF)',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-RV-Storage.webp',
+    details: 'Custom residential workshop featuring high-clearance overhead doors, R-30 spray foam insulation, and custom endwall cladding.',
+  },
+  {
+    id: 'proj-3',
+    category: 'commercial',
+    categoryLabel: 'Commercial',
+    title: '60’ x 120’ Commercial Distribution Hub',
+    location: 'Kamloops, British Columbia',
+    model: 'CFS Framing',
+    snowLoad: '2.8 kPa (58 PSF)',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-Farm.webp',
+    details: 'Straight-wall commercial storage facility built for rapid inventory staging, loading docks, and integrated office space.',
+  },
+  {
+    id: 'proj-4',
+    category: 'industrial',
+    categoryLabel: 'Industrial',
+    title: '80’ x 150’ Heavy Manufacturing Plant',
+    location: 'Saskatoon, Saskatchewan',
+    model: 'I-Beam Structural',
+    snowLoad: '3.5 kPa (73 PSF)',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-RV-Storage.webp',
+    details: 'Heavy rigid-frame structural steel facility equipped with an integrated 10-ton overhead bridge crane track.',
+  },
+  {
+    id: 'proj-5',
+    category: 'residential',
+    categoryLabel: 'Residential',
+    title: '40’ x 60’ Custom Barndominium Shell',
+    location: 'Barrie, Ontario',
+    model: 'Model A Pitched Arch',
+    snowLoad: '3.2 kPa (67 PSF)',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-Farm.webp',
+    details: 'Modern steel home shell featuring 4:12 pitch roofline, pre-cut window framing, and custom exterior steel siding.',
+  },
+  {
+    id: 'proj-6',
+    category: 'agricultural',
+    categoryLabel: 'Agricultural',
+    title: '40’ x 80’ Livestock Barn & Feeding Shelter',
+    location: 'Brandon, Manitoba',
+    model: 'Model P Arch',
+    snowLoad: '4.0 kPa (83 PSF)',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-RV-Storage.webp',
+    details: 'Galvalume™ protected arch building built to resist animal housing humidity, heavy prairie blizzards, and high winds.',
+  },
+];
+---
+
+<section class="gallery-section">
+  <div class="gallery-container">
+    
+    <div class="section-header">
+      <span class="gallery-kicker">PROJECT PORTFOLIO</span>
+      <h2>Real Canadian Steel Building Projects</h2>
+      <p>
+        Explore recent factory-direct builds across Canada. Filter by application to inspect clear-span engineering, endwalls, and actual field installations.
+      </p>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-bar" role="tablist">
+      <button class="filter-btn active" data-filter="all">All Projects</button>
+      <button class="filter-btn" data-filter="agricultural">Agricultural</button>
+      <button class="filter-btn" data-filter="residential">Residential & Garages</button>
+      <button class="filter-btn" data-filter="commercial">Commercial</button>
+      <button class="filter-btn" data-filter="industrial">Industrial</button>
+    </div>
+
+    <!-- Image Grid -->
+    <div class="gallery-grid" id="galleryGrid">
+      {projects.map((proj) => (
+        <div class="gallery-card" data-category={proj.category}>
+          <div class="card-image-box">
+            <img src={proj.image} alt={proj.title} loading="lazy" />
+            <div class="image-overlay">
+              <button 
+                class="view-project-btn"
+                data-title={proj.title}
+                data-location={proj.location}
+                data-model={proj.model}
+                data-snow={proj.snowLoad}
+                data-img={proj.image}
+                data-details={proj.details}
+              >
+                <span>Inspect Project Specs</span>
+                <span class="icon">🔍</span>
+              </button>
+            </div>
+            <span class="cat-badge">{proj.categoryLabel}</span>
+          </div>
+
+          <div class="card-info">
+            <div class="card-meta">
+              <span class="proj-loc">📍 {proj.location}</span>
+              <span class="proj-model">{proj.model}</span>
+            </div>
+            <h3>{proj.title}</h3>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+
+  <!-- Project Inspection Lightbox Modal -->
+  <div class="project-modal" id="projectModal" aria-hidden="true">
+    <div class="modal-backdrop" id="galleryModalBackdrop"></div>
+    <div class="modal-box">
+      <button class="modal-close-btn" id="galleryModalClose" aria-label="Close Project View">&times;</button>
+      
+      <div class="modal-grid">
+        <div class="modal-media">
+          <img id="modalImg" src="" alt="Project View" />
+        </div>
+        
+        <div class="modal-details">
+          <span class="modal-kicker">CANADIAN JOB SITE SPECIFICATIONS</span>
+          <h3 id="modalTitle">Project Title</h3>
+          
+          <div class="spec-pills-row">
+            <span class="spec-pill" id="modalLoc">📍 Location</span>
+            <span class="spec-pill highlight" id="modalModel">Model</span>
+            <span class="spec-pill rating" id="modalSnow">Snow Load</span>
+          </div>
+
+          <p id="modalDesc">Detailed description of project engineering and assembly strategy.</p>
+
+          <div class="modal-actions">
+            <a href="/quote" class="modal-cta-primary">Request Quote For Similar Build →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Filter Logic
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.gallery-card');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.getAttribute('data-filter');
+
+      filterBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      cards.forEach((card) => {
+        const cat = card.getAttribute('data-category');
+        if (filter === 'all' || filter === cat) {
+          card.style.display = 'flex';
+          setTimeout(() => (card.style.opacity = '1'), 50);
+        } else {
+          card.style.opacity = '0';
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Modal Lightbox Logic
+  const modal = document.getElementById('projectModal');
+  const backdrop = document.getElementById('galleryModalBackdrop');
+  const closeBtn = document.getElementById('galleryModalClose');
+  const viewBtns = document.querySelectorAll<HTMLButtonElement>('.view-project-btn');
+
+  const modalImg = document.getElementById('modalImg') as HTMLImageElement;
+  const modalTitle = document.getElementById('modalTitle');
+  const modalLoc = document.getElementById('modalLoc');
+  const modalModel = document.getElementById('modalModel');
+  const modalSnow = document.getElementById('modalSnow');
+  const modalDesc = document.getElementById('modalDesc');
+
+  viewBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!modal) return;
+
+      if (modalImg) modalImg.src = btn.getAttribute('data-img') || '';
+      if (modalTitle) modalTitle.textContent = btn.getAttribute('data-title') || '';
+      if (modalLoc) modalLoc.textContent = `📍 ${btn.getAttribute('data-location')}`;
+      if (modalModel) modalModel.textContent = btn.getAttribute('data-model') || '';
+      if (modalSnow) modalSnow.textContent = `Snow Rating: ${btn.getAttribute('data-snow')}`;
+      if (modalDesc) modalDesc.textContent = btn.getAttribute('data-details') || '';
+
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  closeBtn?.addEventListener('click', closeModal);
+  backdrop?.addEventListener('click', closeModal);
+</script>
+
+<style>
+  .gallery-section {
+    background: #090d16;
+    color: #ffffff;
+    padding: 5rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .gallery-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .gallery-kicker {
+    color: #ff5722;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 800;
+    margin: 0 0 1rem;
+    line-height: 1.15;
+  }
+
+  .section-header p {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Filter Bar */
+  .filter-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .filter-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    padding: 0.65rem 1.25rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .filter-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .filter-btn.active {
+    background: #ff5722;
+    border-color: #ff5722;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.35);
+  }
+
+  /* Gallery Grid */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  .gallery-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+  }
+
+  .gallery-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 87, 34, 0.4);
+  }
+
+  .card-image-box {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+  }
+
+  .card-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .gallery-card:hover .card-image-box img {
+    transform: scale(1.06);
+  }
+
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .gallery-card:hover .image-overlay {
+    opacity: 1;
+  }
+
+  .view-project-btn {
+    background: #ff5722;
+    color: #ffffff;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+  }
+
+  .cat-badge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #38bdf8;
+    font-size: 0.725rem;
+    font-weight: 700;
+    padding: 0.3rem 0.75rem;
+    border-radius: 50px;
+    backdrop-filter: blur(6px);
+  }
+
+  .card-info {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+  }
+
+  .proj-model {
+    color: #38bdf8;
+    font-weight: 700;
+  }
+
+  .card-info h3 {
+    font-size: 1.1rem;
+    line-height: 1.4;
+    margin: 0;
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  /* Lightbox Modal */
+  .project-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .project-modal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+  }
+
+  .modal-box {
+    position: relative;
+    z-index: 2001;
+    width: min(950px, 92vw);
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  }
+
+  .modal-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #ffffff;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 10;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+
+  .modal-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+  }
+
+  .modal-media img {
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .modal-details {
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .modal-kicker {
+    color: #38bdf8;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-details h3 {
+    font-size: 1.6rem;
+    margin: 0 0 1rem;
+    line-height: 1.2;
+    font-weight: 800;
+  }
+
+  .spec-pills-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+
+  .spec-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    font-size: 0.775rem;
+    font-weight: 700;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+  }
+
+  .spec-pill.highlight {
+    color: #ff5722;
+    border-color: rgba(255, 87, 34, 0.3);
+  }
+
+  .spec-pill.rating {
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+
+  .modal-details p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 2rem;
+  }
+
+  .modal-cta-primary {
+    background: #ff5722;
+    color: #ffffff;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+  }
+
+  .modal-cta-primary:hover {
+    background: #e64a19;
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 1024px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .modal-grid {
+      grid-template-columns: 1fr;
+    }
+    .modal-media img {
+      min-height: 250px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

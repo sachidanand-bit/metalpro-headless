@@ -7,69 +7,362 @@ export interface Props {
 
 const { faqs } = Astro.props;
 
-// Generate Schema using legacy plugin logic
+// Limit to top 6 FAQs
+const displayFaqs = faqs.slice(0, 6);
+
+// Build JSON-LD Structured Data for SEO
 const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": faqs.map((faq) => ({
-    "@type": "Question",
-    "name": faq.title,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": faq.content.replace(/<[^>]*>?/gm, '') // Strip HTML tags for valid JSON-LD
-    }
-  }))
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: displayFaqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.title,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.content ? faq.content.replace(/<[^>]*>?/gm, '') : '',
+    },
+  })),
 };
 ---
 
-<style>
-  .metalpro-faqs {
-    max-width: 800px;
-    margin: 2rem auto;
-    font-family: system-ui, sans-serif;
-  }
-  .faq-item {
-    border-bottom: 1px solid #e2e8f0;
-    margin-bottom: 1rem;
-  }
-  .faq-question {
-    padding: 1rem 0;
-    font-weight: 600;
-    font-size: 1.125rem;
-    cursor: pointer;
-    list-style: none; /* Hide default arrow */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .faq-question::-webkit-details-marker {
-    display: none;
-  }
-  .faq-question::after {
-    content: '+';
-    font-size: 1.5rem;
-    transition: transform 0.2s;
-  }
-  details[open] .faq-question::after {
-    content: '-';
-    transform: rotate(180deg);
-  }
-  .faq-answer {
-    padding-bottom: 1.5rem;
-    color: #4a5568;
-    line-height: 1.6;
-  }
-</style>
-
-<!-- Inject FAQ Schema into the Head -->
 <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
-<!-- Render Accordion HTML -->
-<div class="metalpro-faqs">
-  {faqs.map((faq) => (
-    <details class="faq-item">
-      <summary class="faq-question">{faq.title}</summary>
-      <div class="faq-answer" set:html={faq.content} />
-    </details>
-  ))}
-</div>
+<section class="faq-modern-section">
+  <div class="faq-container">
+    <div class="faq-grid">
+      
+      <!-- Left Column: Sticky Title & Support Card -->
+      <div class="faq-info-col">
+        <span class="faq-kicker">ENGINEERING & PERMITS</span>
+        <h2>Frequently Asked Questions</h2>
+        <p class="faq-subtitle">
+          Everything you need to know about Canadian building codes, snow load engineering, stamped blueprints, and DIY installation options.
+        </p>
+        
+        <div class="support-card">
+          <div class="support-icon">💬</div>
+          <div class="support-text">
+            <h4>Have a specific postal code question?</h4>
+            <p>Our Canadian structural engineering specialists calculate site-specific snow and wind loads for your project.</p>
+            <a href="/contact-us" class="support-link">Talk to an Engineer →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Accordion Cards -->
+      <div class="faq-accordion-col">
+        {displayFaqs.map((faq, index) => (
+          <div class={`faq-card ${index === 0 ? 'active' : ''}`}>
+            <button 
+              class="faq-trigger" 
+              aria-expanded={index === 0 ? 'true' : 'false'}
+              type="button"
+            >
+              <span class="faq-number">0{index + 1}</span>
+              <span class="faq-question">{faq.title}</span>
+              <span class="toggle-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 1V13M1 7H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </button>
+            <div 
+              class="faq-content" 
+              style={index === 0 ? 'max-height: 500px; opacity: 1;' : 'max-height: 0px; opacity: 0;'}
+            >
+              <div class="content-inner" set:html={faq.content} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const triggers = document.querySelectorAll<HTMLButtonElement>('.faq-trigger');
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const card = trigger.parentElement;
+      const content = card?.querySelector('.faq-content') as HTMLElement;
+      const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+
+      // Close all other accordions
+      document.querySelectorAll('.faq-trigger').forEach((otherTrigger) => {
+        otherTrigger.setAttribute('aria-expanded', 'false');
+        const otherCard = otherTrigger.parentElement;
+        const otherContent = otherCard?.querySelector('.faq-content') as HTMLElement;
+        if (otherContent) {
+          otherContent.style.maxHeight = '0px';
+          otherContent.style.opacity = '0';
+        }
+        otherCard?.classList.remove('active');
+      });
+
+      // Open clicked accordion if closed
+      if (!isExpanded && content && card) {
+        trigger.setAttribute('aria-expanded', 'true');
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.style.opacity = '1';
+        card.classList.add('active');
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Explicit component resets */
+  .faq-modern-section *,
+  .faq-modern-section *::before,
+  .faq-modern-section *::after {
+    box-sizing: border-box;
+  }
+
+  .faq-modern-section {
+    background: #090d16;
+    color: #ffffff;
+    padding: 5rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    width: 100%;
+  }
+
+  .faq-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  /* Left Column */
+  .faq-info-col {
+    position: sticky;
+    top: 100px;
+  }
+
+  .faq-kicker {
+    color: #ff5722;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .faq-info-col h2 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 800;
+    margin: 0 0 1rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+  }
+
+  .faq-subtitle {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 0 2rem;
+  }
+
+  /* Support Card */
+  .support-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 87, 34, 0.3);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .support-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .support-text h4 {
+    margin: 0 0 0.35rem;
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .support-text p {
+    font-size: 0.875rem;
+    color: #cbd5e1;
+    margin: 0 0 0.85rem;
+    line-height: 1.5;
+  }
+
+  .support-link {
+    color: #ff5722 !important;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+
+  .support-link:hover {
+    transform: translateX(4px);
+    color: #ff7043 !important;
+  }
+
+  /* Accordion Cards */
+  .faq-accordion-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .faq-card {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+  }
+
+  .faq-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .faq-card.active {
+    background: rgba(15, 23, 42, 0.95);
+    border-color: #ff5722;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Trigger Button */
+  .faq-trigger {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    padding: 1.35rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .faq-number {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.1);
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .faq-card.active .faq-number {
+    color: #ff5722;
+    background: rgba(255, 87, 34, 0.12);
+  }
+
+  .faq-question {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.4;
+    flex-grow: 1;
+    color: #ffffff;
+  }
+
+  .toggle-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, color 0.3s ease;
+  }
+
+  .faq-card.active .toggle-icon {
+    transform: rotate(45deg);
+    background: #ff5722;
+    color: #ffffff;
+  }
+
+  /* Collapsible Content Area */
+  .faq-content {
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease;
+    display: block;
+    width: 100%;
+  }
+
+  .content-inner {
+    padding: 0 1.5rem 1.5rem 4rem;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+  }
+
+  /* Overrides for WordPress Inject HTML */
+  .content-inner :global(p) {
+    margin: 0 0 0.75rem;
+    color: #cbd5e1;
+  }
+
+  .content-inner :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .content-inner :global(a) {
+    color: #38bdf8 !important;
+    text-decoration: underline;
+  }
+
+  .content-inner :global(a:hover) {
+    color: #ff7043 !important;
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 1024px) {
+    .faq-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .faq-info-col {
+      position: static;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .content-inner {
+      padding: 0 1.25rem 1.25rem 1.25rem;
+    }
+    
+    .faq-trigger {
+      padding: 1rem 1.25rem;
+      gap: 0.75rem;
+    }
+
+    .faq-question {
+      font-size: 0.95rem;
+    }
+  }
+</style>

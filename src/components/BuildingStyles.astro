@@ -1,0 +1,491 @@
+---
+const buildingStyles = [
+  {
+    id: 'quonset',
+    name: 'Quonset Arch Steel Buildings',
+    tagline: '100% Clear-Span Arch Architecture • Maximum Value & Strength',
+    badge: 'Most Popular for DIY',
+    description: 'Self-supporting arch structures built from heavy-gauge corrugated steel. No interior beams or roof trusses required, giving you 100% usable interior volume.',
+    specs: {
+      clearSpan: '16 ft to 150 ft (Unlimited Length)',
+      assembly: 'High DIY Feasibility (2-3 Person Crew)',
+      snowWindRating: 'Extreme (Arches naturally shed heavy snow)',
+      costTier: '$$ (Lowest Cost per Sq. Ft.)',
+      idealFor: 'Farm storage, workshops, equipment sheds, RV storage, barndominium shells',
+    },
+    archModels: [
+      { name: 'Model Q', shape: 'Traditional Semi-Circular Arch', perk: 'Maximum strength against extreme wind shear' },
+      { name: 'Model S', shape: 'Straight Sides + Pitch Roof', perk: 'Higher vertical sidewall clearance for heavy machinery' },
+      { name: 'Model A', shape: 'Pitched Roof Arch (4:12)', perk: 'Blends arch durability with traditional residential aesthetics' },
+      { name: 'Model P', shape: 'Vertical Sidewalls + Arch Roof', perk: 'Maximizes floor-to-ceiling space for workshops' },
+    ],
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-Farm.webp',
+  },
+  {
+    id: 'cfs',
+    name: 'Cold-Formed Steel (CFS) Framing',
+    tagline: 'Straight-Wall Prefabricated Framing • Modern Architectural Finish',
+    badge: 'Best for Commercial/Retail',
+    description: 'Precision-engineered lightweight steel framing components. Offers straight vertical exterior walls for standard exterior siding, dry-walling, and conventional insulation packages.',
+    specs: {
+      clearSpan: 'Up to 80 ft Clear Span',
+      assembly: 'Contractor Recommended or Skilled DIY',
+      snowWindRating: 'High (Code-engineered per province)',
+      costTier: '$$$',
+      idealFor: 'Retail storefronts, office buildings, custom residential homes, commercial garages',
+    },
+    archModels: [
+      { name: 'Gable Clear-Span', shape: 'Traditional Straight Sidewall', perk: 'Easy interior finishing with standard dry-walling' },
+      { name: 'Single Slope', shape: 'Modern Monoslope Roofline', perk: 'Ideal for drainage and solar panel mounting' },
+    ],
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-RV-Storage.webp',
+  },
+  {
+    id: 'ibeam',
+    name: 'I-Beam Heavy Structural Steel',
+    tagline: 'Heavy Rigid-Frame Steel • Massive Clear-Span Capacity',
+    badge: 'Industrial Grade',
+    description: 'Heavy structural steel plate frames designed for large-scale industrial plants, aircraft hangars, and operations requiring integrated overhead crane systems.',
+    specs: {
+      clearSpan: 'Up to 300+ ft Clear Span',
+      assembly: 'Professional Crane & Erection Crew Required',
+      snowWindRating: 'Maximum Heavy Industrial Grade',
+      costTier: '$$$$',
+      idealFor: 'Aircraft hangars, manufacturing plants, logistics warehouses, heavy industrial hubs',
+    },
+    archModels: [
+      { name: 'Rigid Frame', shape: 'Heavy Solid Web I-Beam', perk: 'Supports heavy overhead bridge cranes & high loads' },
+      { name: 'Modular Frame', shape: 'Multi-Bay Interior Columns', perk: 'Cost-effective for massive warehouse square footage' },
+    ],
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-Farm.webp',
+  },
+];
+---
+
+<section class="styles-section">
+  <div class="styles-container">
+    
+    <div class="section-header">
+      <span class="styles-kicker">STRUCTURAL ARCHITECTURE</span>
+      <h2>Explore Steel Building Styles & Arch Profiles</h2>
+      <p>
+        Compare framing systems to find the structural style that fits your building footprint, clear-span clearance requirements, and erection strategy.
+      </p>
+    </div>
+
+    <!-- Style Selector Tabs -->
+    <div class="style-tabs" role="tablist">
+      {buildingStyles.map((style, index) => (
+        <button
+          class={`style-tab-btn ${index === 0 ? 'active' : ''}`}
+          data-style={style.id}
+          role="tab"
+          aria-selected={index === 0 ? 'true' : 'false'}
+        >
+          <span class="btn-badge">{style.badge}</span>
+          <span class="btn-title">{style.name}</span>
+        </button>
+      ))}
+    </div>
+
+    <!-- Interactive Style Panels -->
+    <div class="style-panels">
+      {buildingStyles.map((style, index) => (
+        <div
+          id={`style-panel-${style.id}`}
+          class={`style-panel ${index === 0 ? 'active' : ''}`}
+          role="tabpanel"
+        >
+          <div class="panel-layout">
+            
+            <!-- Left Information Column -->
+            <div class="panel-details">
+              <span class="style-tagline">{style.tagline}</span>
+              <h3>{style.name}</h3>
+              <p class="description">{style.description}</p>
+
+              <!-- Detailed Spec Table -->
+              <div class="spec-table">
+                <div class="spec-row">
+                  <span class="spec-key">Clear Span Capacity</span>
+                  <span class="spec-val">{style.specs.clearSpan}</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-key">Assembly Feasibility</span>
+                  <span class="spec-val">{style.specs.assembly}</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-key">Snow & Wind Resistance</span>
+                  <span class="spec-val">{style.specs.snowWindRating}</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-key">Relative Cost Tier</span>
+                  <span class="spec-val highlight">{style.specs.costTier}</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-key">Primary Ideal Uses</span>
+                  <span class="spec-val">{style.specs.idealFor}</span>
+                </div>
+              </div>
+
+              <!-- Arch Sub-Models (if present) -->
+              <div class="sub-models">
+                <h4>Available Profiles & Variations:</h4>
+                <div class="models-grid">
+                  {style.archModels.map((mod) => (
+                    <div class="model-pill">
+                      <strong>{mod.name}</strong>
+                      <span>{mod.shape} — <em>{mod.perk}</em></span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div class="panel-cta">
+                <a href="/quote" class="cta-primary">Configure {style.name} Quote →</a>
+                <a href="/building-comparison" class="cta-secondary">Full System Comparison</a>
+              </div>
+            </div>
+
+            <!-- Right Visual Graphic -->
+            <div class="panel-visual">
+              <img src={style.image} alt={style.name} class="style-img" />
+              <div class="engineering-stamp">
+                <span class="stamp-icon">📐</span>
+                <div>
+                  <strong>Stamped Provincial Engineering</strong>
+                  <small>Calculated for your exact postal code</small>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const styleBtns = document.querySelectorAll<HTMLButtonElement>('.style-tab-btn');
+  const stylePanels = document.querySelectorAll<HTMLElement>('.style-panel');
+
+  styleBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetStyle = btn.getAttribute('data-style');
+
+      styleBtns.forEach((b) => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      stylePanels.forEach((p) => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      const activePanel = document.getElementById(`style-panel-${targetStyle}`);
+      activePanel?.classList.add('active');
+    });
+  });
+</script>
+
+<style>
+  .styles-section {
+    background: #0f172a;
+    color: #ffffff;
+    padding: 4.5rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .styles-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+  }
+
+  .styles-kicker {
+    color: #ff5722;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.8rem, 4vw, 2.75rem);
+    font-weight: 800;
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  .section-header p {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Style Tabs */
+  .style-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .style-tab-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .style-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .style-tab-btn.active {
+    background: rgba(255, 87, 34, 0.12);
+    border-color: #ff5722;
+    box-shadow: 0 4px 20px rgba(255, 87, 34, 0.2);
+  }
+
+  .btn-badge {
+    font-size: 0.725rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #38bdf8;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-title {
+    font-size: 1.05rem;
+    font-weight: 750;
+    color: #ffffff;
+  }
+
+  .style-tab-btn.active .btn-title {
+    color: #ff5722;
+  }
+
+  /* Panel Layout */
+  .style-panel {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .style-panel.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .panel-layout {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2.5rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .style-tagline {
+    color: #ff7043;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .panel-details h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0.3rem 0 0.8rem;
+  }
+
+  .description {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+
+  /* Spec Table */
+  .spec-table {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 0.875rem;
+  }
+
+  .spec-row:last-child {
+    border-bottom: none;
+  }
+
+  .spec-key {
+    color: #94a3b8;
+    font-weight: 600;
+  }
+
+  .spec-val {
+    color: #ffffff;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .spec-val.highlight {
+    color: #38bdf8;
+    font-weight: 800;
+  }
+
+  /* Sub Models */
+  .sub-models h4 {
+    font-size: 0.95rem;
+    color: #e2e8f0;
+    margin: 0 0 0.75rem;
+  }
+
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .model-pill {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.65rem 0.85rem;
+    border-radius: 8px;
+  }
+
+  .model-pill strong {
+    display: block;
+    color: #ff5722;
+    font-size: 0.85rem;
+  }
+
+  .model-pill span {
+    font-size: 0.775rem;
+    color: #94a3b8;
+  }
+
+  /* CTAs */
+  .panel-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-primary {
+    background: #ff5722;
+    color: #ffffff;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .cta-primary:hover {
+    background: #e64a19;
+  }
+
+  .cta-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* Visual Column */
+  .panel-visual {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .style-img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+  }
+
+  .engineering-stamp {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .stamp-icon {
+    font-size: 1.5rem;
+  }
+
+  .engineering-stamp strong {
+    display: block;
+    font-size: 0.875rem;
+    color: #ffffff;
+  }
+
+  .engineering-stamp small {
+    color: #94a3b8;
+    font-size: 0.75rem;
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 1024px) {
+    .panel-layout {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 1.5rem;
+    }
+    .style-tabs {
+      grid-template-columns: 1fr;
+    }
+    .models-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

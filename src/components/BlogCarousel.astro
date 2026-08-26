@@ -1,0 +1,262 @@
+---
+import type { PostNode } from '../types/wp';
+
+export interface Props {
+  posts: PostNode[];
+}
+
+const { posts } = Astro.props;
+---
+
+<section class="blog-carousel-section">
+  <div class="carousel-container">
+    
+    <!-- Header with Nav Controls -->
+    <div class="carousel-header">
+      <div>
+        <span class="section-kicker">KNOWLEDGE CENTER</span>
+        <h2>Latest Building Insights & Guides</h2>
+      </div>
+      <div class="carousel-controls">
+        <button class="ctrl-btn" id="blogPrev" aria-label="Previous Slide">‹</button>
+        <button class="ctrl-btn" id="blogNext" aria-label="Next Slide">›</button>
+      </div>
+    </div>
+
+    <!-- Scroll-Snap Track -->
+    <div class="carousel-track" id="blogTrack">
+      {posts.map((post) => {
+        const image = post.featuredImage?.node?.sourceUrl || 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-Farm.webp';
+        const category = post.categories?.nodes[0]?.name || 'Building Guide';
+        const snippet = post.seo?.description || 'Discover key engineering considerations, cost projections, and building codes for Canadian steel structures.';
+
+        return (
+          <article class="blog-card">
+            <a href={`/${post.slug}`} class="card-image-wrap">
+              <img src={image} alt={post.title} loading="lazy" />
+              <span class="cat-pill">{category}</span>
+            </a>
+
+            <div class="card-content">
+              <h3>
+                <a href={`/${post.slug}`}>{post.title}</a>
+              </h3>
+              <p>{snippet}</p>
+              
+              <a href={`/${post.slug}`} class="read-more">
+                <span>Read Full Article</span>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const track = document.getElementById('blogTrack');
+  const prevBtn = document.getElementById('blogPrev');
+  const nextBtn = document.getElementById('blogNext');
+
+  if (track && prevBtn && nextBtn) {
+    const scrollAmount = 380; // Distance per click
+
+    prevBtn.addEventListener('click', () => {
+      track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+      track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+  }
+</script>
+
+<style>
+  .blog-carousel-section {
+    background: #090d16;
+    color: #ffffff;
+    padding: 4.5rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .carousel-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .section-kicker {
+    color: #ff5722;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .carousel-header h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    margin: 0;
+  }
+
+  /* Arrow Nav Controls */
+  .carousel-controls {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .ctrl-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+  }
+
+  .ctrl-btn:hover {
+    background: #ff5722;
+    border-color: #ff5722;
+    transform: scale(1.05);
+  }
+
+  /* Carousel Track (Snap Scrolling) */
+  .carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-bottom: 1.5rem;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .carousel-track::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  /* Blog Card */
+  .blog-card {
+    flex: 0 0 360px;
+    scroll-snap-align: start;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 87, 34, 0.4);
+  }
+
+  .card-image-wrap {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    display: block;
+  }
+
+  .card-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .blog-card:hover .card-image-wrap img {
+    transform: scale(1.05);
+  }
+
+  .cat-pill {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #38bdf8;
+    font-size: 0.725rem;
+    font-weight: 700;
+    padding: 0.3rem 0.75rem;
+    border-radius: 50px;
+    backdrop-filter: blur(6px);
+  }
+
+  .card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-content h3 {
+    font-size: 1.15rem;
+    line-height: 1.4;
+    margin: 0 0 0.75rem;
+    font-weight: 700;
+  }
+
+  .card-content h3 a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .card-content h3 a:hover {
+    color: #ff5722;
+  }
+
+  .card-content p {
+    color: #cbd5e1;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .read-more {
+    color: #ff5722;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: gap 0.2s ease;
+  }
+
+  .read-more:hover {
+    gap: 0.65rem;
+  }
+
+  @media (max-width: 600px) {
+    .blog-card {
+      flex: 0 0 290px;
+    }
+  }
+</style>

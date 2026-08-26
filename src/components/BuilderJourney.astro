@@ -1,0 +1,297 @@
+---
+const steps = [
+  {
+    number: '01',
+    title: 'Climate & Site Analysis',
+    kicker: 'Step 1 — Engineering Evaluation',
+    description: 'We evaluate your exact job site coordinates against local municipal building codes, calculating required snow loads, wind shear resistance, and thermal insulation targets.',
+    details: [
+      'Postal code climate data lookup',
+      'Municipal building code verification',
+      'Anchor bolt & foundation recommendations',
+    ],
+    badge: '100% Custom Engineered',
+  },
+  {
+    number: '02',
+    title: 'Stamped Blueprints',
+    kicker: 'Step 2 — Architectural Approval',
+    description: 'Our engineering team produces complete architectural schematics stamped by a certified Provincial Professional Engineer (P.Eng) for easy permit approval.',
+    details: [
+      'Provincial P.Eng sealed drawings',
+      'Anchor bolt placement plans',
+      '3D assembly schematics',
+    ],
+    badge: 'Permit Ready',
+  },
+  {
+    number: '03',
+    title: 'Precision Manufacturing',
+    kicker: 'Step 3 — Factory Fabrication',
+    description: 'Your building components are manufactured from heavy-gauge Canadian Galvalume™ steel, pre-punched, and bundled for weather-resistant transport.',
+    details: [
+      'Certified CSA-A660 manufacturing facility',
+      'Commercial-grade Galvalume™ steel',
+      'Direct freight delivery to job site',
+    ],
+    badge: 'Canadian Steel',
+  },
+  {
+    number: '04',
+    title: 'Erection & Support',
+    kicker: 'Step 4 — Assembly Choice',
+    description: 'Choose your preferred construction strategy: build it yourself using our modular bolt-together system, or work with our trusted local builder referral network.',
+    details: [
+      'DIY assembly with basic tools & crew',
+      'Vetted professional installer network',
+      'Dedicated technical support during build',
+    ],
+    badge: 'DIY or Pro Install',
+  },
+];
+---
+
+<section class="journey-section">
+  <div class="journey-container">
+    
+    <div class="section-header">
+      <span class="journey-kicker">THE METAL PRO METHOD</span>
+      <h2>Your Guided Journey from Concept to Completion</h2>
+      <p>
+        Navigating building permits and structural codes can be complex. We guide you through every stage to guarantee your project complies with Canadian standards.
+      </p>
+    </div>
+
+    <!-- Stepper Grid -->
+    <div class="stepper-grid">
+      {steps.map((step) => (
+        <div class="step-card">
+          <div class="card-top">
+            <span class="step-number">{step.number}</span>
+            <span class="step-badge">{step.badge}</span>
+          </div>
+
+          <span class="step-kicker">{step.kicker}</span>
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+
+          <ul class="step-details">
+            {step.details.map((detail) => (
+              <li><span>✓</span> {detail}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom CTA Banner -->
+    <div class="journey-banner">
+      <div class="banner-content">
+        <h3>Ready to start your building consultation?</h3>
+        <p>Speak directly with a Canadian steel specialist to calculate snow load requirements for your postal code.</p>
+      </div>
+      <a href="/quote" class="banner-btn">Start Free Engineering Consultation →</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .journey-section {
+    background: #090d16;
+    color: #ffffff;
+    padding: 4.5rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .journey-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .journey-kicker {
+    color: #38bdf8;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.8rem, 4vw, 2.75rem);
+    font-weight: 800;
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  .section-header p {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Grid Layout */
+  .stepper-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .step-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1.75rem 1.25rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .step-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .step-number {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ff5722;
+    line-height: 1;
+  }
+
+  .step-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #38bdf8;
+    font-size: 0.725rem;
+    font-weight: 700;
+    padding: 0.3rem 0.65rem;
+    border-radius: 50px;
+  }
+
+  .step-kicker {
+    font-size: 0.775rem;
+    color: #94a3b8;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .step-card h3 {
+    font-size: 1.2rem;
+    font-weight: 750;
+    margin: 0 0 0.75rem;
+    color: #ffffff;
+  }
+
+  .step-card p {
+    color: #cbd5e1;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+    flex-grow: 1;
+  }
+
+  .step-details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .step-details li {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .step-details li span {
+    color: #4ade80;
+    font-weight: bold;
+  }
+
+  /* Bottom Banner */
+  .journey-banner {
+    background: linear-gradient(135deg, rgba(255, 87, 34, 0.15) 0%, rgba(15, 23, 42, 0.9) 100%);
+    border: 1px solid rgba(255, 87, 34, 0.3);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .banner-content h3 {
+    font-size: 1.4rem;
+    margin: 0 0 0.3rem;
+    font-weight: 800;
+  }
+
+  .banner-content p {
+    color: #cbd5e1;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .banner-btn {
+    background: #ff5722;
+    color: #ffffff;
+    padding: 0.9rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+  }
+
+  .banner-btn:hover {
+    background: #e64a19;
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 1024px) {
+    .stepper-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .stepper-grid {
+      grid-template-columns: 1fr;
+    }
+    .journey-banner {
+      flex-direction: column;
+      text-align: center;
+    }
+    .banner-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

@@ -18,8 +18,16 @@ const { seo = null, title = 'Metal Pro Buildings' } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <SeoHead seo={seo} fallbackTitle={title} />
+
+    <!-- Google Fonts: Space Grotesk (Headings/CTAs) & Manrope (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" 
+      rel="stylesheet" 
+    />
   </head>
-  <body style="margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; color: #1e293b; background-color: #ffffff;">
+  <body>
     <Header />
     <main>
       <slot />
@@ -27,3 +35,51 @@ const { seo = null, title = 'Metal Pro Buildings' } = Astro.props;
     <Footer />
   </body>
 </html>
+
+<style is:global>
+  /* Global Brand Tokens */
+  :root {
+    --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    --font-body: 'Manrope', system-ui, -apple-system, sans-serif;
+
+    /* Official Brand Colors */
+    --color-orange: #f86011;       /* CTAs & Primary Highlights */
+    --color-blue: #3ba8e1;         /* Technical Accents & Badges */
+    --color-black: #000000;        /* Main Backgrounds & Contrast */
+    --color-gray-light: #f0f1f3;   /* Light Surfaces & Dividers */
+    --color-white: #ffffff;        /* Pure White */
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    font-family: var(--font-body);
+    background-color: var(--color-black);
+    color: var(--color-white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Universal Typography Enforcement */
+  h1, h2, h3, h4, h5, h6,
+  button,
+  .cta-button,
+  .btn,
+  .kicker,
+  .badge {
+    font-family: var(--font-heading) !important;
+  }
+
+  p, li, span, input, select, textarea {
+    font-family: var(--font-body);
+  }
+
+  a {
+    color: inherit;
+  }
+</style>

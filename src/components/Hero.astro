@@ -1,0 +1,446 @@
+---
+const applications = [
+  {
+    id: 'agricultural',
+    title: 'Agricultural & Farm',
+    tagline: 'Engineered for Prairie Snow Loads & Equipment Storage',
+    description: 'Protect heavy machinery, livestock, and yield with clear-span steel arches that resist extreme winter loads without internal support columns.',
+    specs: [
+      { label: 'Snow Load Rating', value: 'Up to 120 PSF' },
+      { label: 'Max Clear Span', value: '150 ft (Column-Free)' },
+      { label: 'Engineering', value: 'CSA-A660 Certified' },
+      { label: 'Warranty', value: '50-Year Structural' },
+    ],
+    ctaText: 'Explore Farm Specs',
+    ctaLink: '/steel-farm-building-canada-running-an-agricultural-operation',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-Farm.webp',
+  },
+  {
+    id: 'residential',
+    title: 'Residential & Workshop',
+    tagline: 'Custom Garages, Sheds & Living Spaces',
+    description: 'Build your dream workshop, RV garage, or barndominium shell with factory-direct Canadian steel designed for quick DIY assembly or contractor referral.',
+    specs: [
+      { label: 'Assembly', value: 'DIY Kit or Pro Install' },
+      { label: 'Insulation Support', value: 'R-30+ Ready' },
+      { label: 'Customization', value: 'Doors, Windows, Endwalls' },
+      { label: 'Warranty', value: '50-Year Structural' },
+    ],
+    ctaText: 'Explore Residential Specs',
+    ctaLink: '/steel-garage-canada-what-ownership-is-really-like',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-RV-Storage.webp',
+  },
+  {
+    id: 'commercial',
+    title: 'Commercial & Warehouses',
+    tagline: 'Maximum Cubic Capacity & Operations Efficiency',
+    description: 'Scale your business with rapid-erection steel buildings optimized for logistics, retail operations, and heavy inventory storage.',
+    specs: [
+      { label: 'Erection Time', value: '3x Faster than Wood' },
+      { label: 'Code Compliance', value: 'NBC 2025 Compliant' },
+      { label: 'Clearance', value: 'High-Eave Clearance' },
+      { label: 'Warranty', value: '50-Year Structural' },
+    ],
+    ctaText: 'Explore Commercial Specs',
+    ctaLink: '/steel-warehouse-building-canada-running-a-warehouse-business',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-Farm.webp',
+  },
+  {
+    id: 'industrial',
+    title: 'Industrial & Heavy Duty',
+    tagline: 'Heavy Manufacturing & Cold Storage Facilities',
+    description: 'Rugged structural steel solutions designed for manufacturing plants, container covers, and heavy industrial plant sites across all Canadian provinces.',
+    specs: [
+      { label: 'Steel Grade', value: 'Heavy-Gauge Canadian Steel' },
+      { label: 'Corrosion', value: 'Galvalume™ Protected' },
+      { label: 'Stamps', value: 'Provincial P.Eng Stamped' },
+      { label: 'Warranty', value: '50-Year Structural' },
+    ],
+    ctaText: 'Explore Industrial Specs',
+    ctaLink: '/industrial-steel-building-canada-a-manufacturing-operations-guide',
+    image: 'https://cxm.ihg.mybluehost.me/website_e18f7bf7/wp-content/uploads/2026/08/Steel-RV-Storage.webp',
+  },
+];
+---
+
+<section class="hero-section">
+  <div class="hero-container">
+    
+    <!-- Top Announcement Bar -->
+    <div class="hero-badge">
+      <span class="flag">🇨🇦</span> 
+      <span>100% Canadian Steel • Certified Provincial P.Eng Stamped Engineering</span>
+    </div>
+
+    <!-- Main Headline & Intro -->
+    <div class="hero-header">
+      <h1>Engineered Canadian Steel Buildings.<br /><span class="gradient-text">Built to Outlast Extreme Climates.</span></h1>
+      <p class="hero-subtitle">
+        We guide Canadian builders through selection, snow/wind load engineering, and stamped blueprinting for a seamless, factory-direct construction experience.
+      </p>
+    </div>
+
+    <!-- Application Switcher (Interactive Dwell-Time Module) -->
+    <div class="switcher-wrapper">
+      <div class="switcher-tabs" role="tablist">
+        {applications.map((app, index) => (
+          <button
+            class={`tab-btn ${index === 0 ? 'active' : ''}`}
+            data-target={app.id}
+            role="tab"
+            aria-selected={index === 0 ? 'true' : 'false'}
+          >
+            {app.title}
+          </button>
+        ))}
+      </div>
+
+      <!-- Tab Content Panels -->
+      <div class="switcher-panels">
+        {applications.map((app, index) => (
+          <div
+            id={`panel-${app.id}`}
+            class={`content-panel ${index === 0 ? 'active' : ''}`}
+            role="tabpanel"
+          >
+            <div class="panel-grid">
+              
+              <!-- Left Specs & Copy Column -->
+              <div class="panel-info">
+                <span class="kicker">{app.tagline}</span>
+                <h2>{app.title} Solutions</h2>
+                <p>{app.description}</p>
+
+                <!-- Spec Badges Grid -->
+                <div class="specs-grid">
+                  {app.specs.map((spec) => (
+                    <div class="spec-card">
+                      <span class="spec-value">{spec.value}</span>
+                      <span class="spec-label">{spec.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div class="panel-actions">
+                  <a href={app.ctaLink} class="primary-btn">{app.ctaText} →</a>
+                  <a href="/quote" class="secondary-btn">Request Stamped Blueprint Quote</a>
+                </div>
+              </div>
+
+              <!-- Right Visual Preview -->
+              <div class="panel-media">
+                <img src={app.image} alt={app.title} class="panel-img" />
+                <div class="trust-overlay">
+                  <span class="trust-icon">🛡️</span>
+                  <div>
+                    <strong>50-Year Guarantee</strong>
+                    <small>Factory Direct Engineering</small>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const tabButtons = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+  const panels = document.querySelectorAll<HTMLElement>('.content-panel');
+
+  tabButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+
+      // Deactivate all
+      tabButtons.forEach((b) => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach((p) => p.classList.remove('active'));
+
+      // Activate selected
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const activePanel = document.getElementById(`panel-${targetId}`);
+      activePanel?.classList.add('active');
+    });
+  });
+</script>
+
+<style>
+  .hero-section {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    padding: 3.5rem 1.5rem 4.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 87, 34, 0.15);
+    border: 1px solid rgba(255, 87, 34, 0.4);
+    color: #ff7043;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 3rem;
+  }
+
+  .hero-header h1 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg, #ff5722 0%, #ff8a65 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    font-size: 1.15rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 750px;
+  }
+
+  /* Switcher Container */
+  .switcher-wrapper {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  }
+
+  .switcher-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    padding: 0.85rem 1rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .tab-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .tab-btn.active {
+    background: #ff5722;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.35);
+  }
+
+  /* Panel Content */
+  .content-panel {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .content-panel.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .panel-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .kicker {
+    color: #ff7043;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .panel-info h2 {
+    font-size: 2rem;
+    margin: 0.3rem 0 1rem;
+    font-weight: 700;
+  }
+
+  .panel-info p {
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    font-size: 1.05rem;
+  }
+
+  /* Specs Grid */
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .spec-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+  }
+
+  .spec-value {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #38bdf8;
+  }
+
+  .spec-label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+
+  /* Actions */
+  .panel-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .primary-btn {
+    background: #ff5722;
+    color: #ffffff;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .primary-btn:hover {
+    background: #e64a19;
+  }
+
+  .secondary-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: background 0.2s ease;
+  }
+
+  .secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Media Preview */
+  .panel-media {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  }
+
+  .panel-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .trust-overlay {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .trust-icon {
+    font-size: 1.5rem;
+  }
+
+  .trust-overlay strong {
+    display: block;
+    font-size: 0.9rem;
+    color: #ffffff;
+  }
+
+  .trust-overlay small {
+    color: #94a3b8;
+    font-size: 0.75rem;
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 1024px) {
+    .panel-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .switcher-tabs {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .switcher-tabs {
+      grid-template-columns: 1fr;
+    }
+    .specs-grid {
+      grid-template-columns: 1fr;
+    }
+    .panel-actions {
+      flex-direction: column;
+    }
+    .panel-actions a {
+      text-align: center;
+    }
+  }
+</style>

@@ -1,7 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getFAQs, getPosts } from '../lib/wp';
+import Hero from '../components/Hero.astro';
+import EngineeringMap from '../components/EngineeringMap.astro';
+import BuildingStyles from '../components/BuildingStyles.astro';
+import BuildingGallery from '../components/BuildingGallery.astro';
+import BuilderJourney from '../components/BuilderJourney.astro';
+import PanoramaGallery from '../components/PanoramaGallery.astro';
+import BlogCarousel from '../components/BlogCarousel.astro';
 import FaqSection from '../components/FaqSection.astro';
+import { getFAQs, getPosts } from '../lib/wp';
 
 const faqs = await getFAQs();
 const posts = await getPosts();
@@ -9,21 +16,12 @@ const sampleSeo = posts[0]?.seo || null;
 ---
 
 <BaseLayout seo={sampleSeo} title="Metal Pro Buildings | Steel Buildings Canada">
-  <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem;">
-    <h1>Metal Pro Buildings</h1>
-
-    <h2>Recent Articles</h2>
-    <ul>
-      {posts.map((post) => (
-        <li style="margin-bottom: 0.5rem;">
-          <a href={`/${post.slug}`} style="color: #2563eb; text-decoration: underline;">
-            {post.title}
-          </a>
-        </li>
-      ))}
-    </ul>
-
-    <h2>Frequently Asked Questions</h2>
-    <FaqSection faqs={faqs} />
-  </div>
+  <Hero />
+  <EngineeringMap />
+  <BuildingStyles />
+  <BuildingGallery />
+  <BuilderJourney />
+  <PanoramaGallery />
+  <BlogCarousel posts={posts} />
+  <FaqSection faqs={faqs} />
 </BaseLayout>

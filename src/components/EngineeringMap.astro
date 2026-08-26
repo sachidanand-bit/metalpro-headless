@@ -1,0 +1,405 @@
+---
+const regions = [
+  {
+    id: 'ontario',
+    name: 'Ontario',
+    code: 'OBC Standard',
+    snowLoad: '2.0 – 4.5 kPa (42 – 94 PSF)',
+    windSpeed: '100 – 120 km/h',
+    stamp: 'Stamped P.Eng (Ontario)',
+    recommendedArch: 'Model P & Model S (High Roof Pitch)',
+    highlights: [
+      'Updated OBC insulation and thermal break compliance ready',
+      'Engineered for heavy lake-effect snow belts (Muskoka, Northern ON)',
+      'Certified CSA-A660 steel manufacturing plant verification',
+    ],
+  },
+  {
+    id: 'prairies',
+    name: 'Alberta & Prairies',
+    code: 'ABC / NBC Standard',
+    snowLoad: '1.5 – 3.8 kPa (31 – 80 PSF)',
+    windSpeed: '110 – 140 km/h (Open Plain)',
+    stamp: 'Stamped P.Eng (AB, SK, MB)',
+    recommendedArch: 'Model Q & Model A (Extreme Wind Profile)',
+    highlights: [
+      'High-velocity wind resistance for flat agricultural plains',
+      'Wide clear-span arches for combines and broad-acre farm storage',
+      'Cold-climate foundation and anchor bolt engineering specifications',
+    ],
+  },
+  {
+    id: 'bc',
+    name: 'British Columbia',
+    code: 'BCBC Standard',
+    snowLoad: '2.5 – 7.0+ kPa (Alpine Zone Ready)',
+    windSpeed: '90 – 130 km/h',
+    stamp: 'Stamped P.Eng (British Columbia)',
+    recommendedArch: 'Heavy-Pitch Arch / Custom Span',
+    highlights: [
+      'Full seismic zone engineering compliance (Coastal & Island regions)',
+      'Custom alpine snow-load packages for heavy interior mountain snowfall',
+      'Galvalume™ coating for high-humidity coastal salt protection',
+    ],
+  },
+  {
+    id: 'atlantic',
+    name: 'Atlantic Canada',
+    code: 'NBC Standard',
+    snowLoad: '2.2 – 5.0 kPa (46 – 104 PSF)',
+    windSpeed: '120 – 160 km/h (Coastal Winds)',
+    stamp: 'Stamped P.Eng (NS, NB, NL, PEI)',
+    recommendedArch: 'High-Shear Model Q Arch',
+    highlights: [
+      'Engineered for severe Atlantic ocean storm and gale-force winds',
+      'Corrosion protection against salt fog and damp coastal climates',
+      'Optimized freight routing to Eastern Canadian job sites',
+    ],
+  },
+];
+---
+
+<section class="engineering-section">
+  <div class="eng-container">
+
+    <div class="section-header">
+      <span class="eng-kicker">PROVINCIAL CODE COMPLIANCE</span>
+      <h2>Canadian Regional Climate & Engineering Selector</h2>
+      <p>
+        Every Canadian province presents unique climate challenges. Select your region below to view region-specific engineering standards, load ratings, and P.Eng certification details.
+      </p>
+    </div>
+
+    <div class="selector-layout">
+      <!-- Province Tabs -->
+      <div class="region-nav" role="tablist">
+        {regions.map((reg, idx) => (
+          <button
+            class={`region-btn ${idx === 0 ? 'active' : ''}`}
+            data-region={reg.id}
+            role="tab"
+            aria-selected={idx === 0 ? 'true' : 'false'}
+          >
+            <span class="region-name">{reg.name}</span>
+            <span class="region-code">{reg.code}</span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Detail Card Display -->
+      <div class="region-display">
+        {regions.map((reg, idx) => (
+          <div
+            id={`region-card-${reg.id}`}
+            class={`region-card ${idx === 0 ? 'active' : ''}`}
+            role="tabpanel"
+          >
+            <div class="card-header">
+              <div>
+                <h3>{reg.name} Engineering Specs</h3>
+                <span class="stamp-badge">✓ {reg.stamp}</span>
+              </div>
+              <span class="csa-badge">CSA-A660 Certified</span>
+            </div>
+
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <span class="metric-value">{reg.snowLoad}</span>
+                <span class="metric-label">Ground Snow Load Rating</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-value">{reg.windSpeed}</span>
+                <span class="metric-label">Wind Shear Rating</span>
+              </div>
+              <div class="metric-box wide">
+                <span class="metric-value">{reg.recommendedArch}</span>
+                <span class="metric-label">Recommended Arch Profile</span>
+              </div>
+            </div>
+
+            <div class="highlights-list">
+              <h4>Key Engineering & Code Features:</h4>
+              <ul>
+                {reg.highlights.map((item) => (
+                  <li><span>✓</span> {item}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="card-footer">
+              <a href="/quote" class="eng-cta">Get Stamped Blueprints for {reg.name} →</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const regionBtns = document.querySelectorAll<HTMLButtonElement>('.region-btn');
+  const regionCards = document.querySelectorAll<HTMLElement>('.region-card');
+
+  regionBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const regionId = btn.getAttribute('data-region');
+
+      regionBtns.forEach((b) => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      regionCards.forEach((c) => c.classList.remove('active'));
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      const targetCard = document.getElementById(`region-card-${regionId}`);
+      targetCard?.classList.add('active');
+    });
+  });
+</script>
+
+<style>
+  .engineering-section {
+    background: #090d16;
+    color: #ffffff;
+    padding: 4.5rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .eng-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 780px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .eng-kicker {
+    color: #38bdf8;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.8rem, 4vw, 2.75rem);
+    font-weight: 800;
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  .section-header p {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Grid Layout */
+  .selector-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* Navigation Sidebar */
+  .region-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .region-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .region-btn:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .region-btn.active {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: #38bdf8;
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
+  }
+
+  .region-name {
+    color: #ffffff;
+    font-weight: 750;
+    font-size: 1.05rem;
+  }
+
+  .region-code {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+  }
+
+  .region-btn.active .region-name {
+    color: #38bdf8;
+  }
+
+  /* Cards Display */
+  .region-display {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    min-height: 420px;
+    backdrop-filter: blur(10px);
+  }
+
+  .region-card {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .region-card.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .card-header h3 {
+    font-size: 1.6rem;
+    margin: 0 0 0.4rem;
+    font-weight: 800;
+  }
+
+  .stamp-badge {
+    color: #4ade80;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .csa-badge {
+    background: rgba(255, 87, 34, 0.15);
+    border: 1px solid rgba(255, 87, 34, 0.4);
+    color: #ff7043;
+    padding: 0.35rem 0.85rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  /* Metrics Grid */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .metric-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.2rem;
+    border-radius: 10px;
+  }
+
+  .metric-box.wide {
+    grid-column: span 2;
+  }
+
+  .metric-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #38bdf8;
+    margin-bottom: 0.25rem;
+  }
+
+  .metric-label {
+    font-size: 0.825rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Highlights */
+  .highlights-list h4 {
+    font-size: 1rem;
+    margin: 0 0 0.85rem;
+    color: #e2e8f0;
+  }
+
+  .highlights-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .highlights-list li {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .highlights-list li span {
+    color: #4ade80;
+    font-weight: bold;
+  }
+
+  /* CTA */
+  .eng-cta {
+    display: inline-block;
+    background: #ff5722;
+    color: #ffffff;
+    padding: 0.9rem 1.75rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background 0.2s ease;
+  }
+
+  .eng-cta:hover {
+    background: #e64a19;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .selector-layout {
+      grid-template-columns: 1fr;
+    }
+    .metric-box.wide {
+      grid-column: span 1;
+    }
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
